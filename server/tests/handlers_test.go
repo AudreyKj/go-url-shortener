@@ -38,11 +38,11 @@ func TestCreateShortURL_Success(t *testing.T) {
 
 	mockService.On("CreateShortURL", mock.Anything, requestBody).Return(expectedResponse, nil)
 
-	router.POST("/shorten", handler.CreateShortURL)
+	router.POST("/urls", handler.CreateShortURL)
 
 	// Create request
 	jsonBody, _ := json.Marshal(requestBody)
-	req := httptest.NewRequest("POST", "/shorten", bytes.NewBuffer(jsonBody))
+	req := httptest.NewRequest("POST", "/urls", bytes.NewBuffer(jsonBody))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -68,10 +68,10 @@ func TestCreateShortURL_InvalidJSON(t *testing.T) {
 	mockService := new(MockURLService)
 	handler := handlers.NewURLHandler(mockService)
 
-	router.POST("/shorten", handler.CreateShortURL)
+	router.POST("/urls", handler.CreateShortURL)
 
 	// Create request with invalid JSON
-	req := httptest.NewRequest("POST", "/shorten", bytes.NewBufferString("invalid json"))
+	req := httptest.NewRequest("POST", "/urls", bytes.NewBufferString("invalid json"))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -97,11 +97,11 @@ func TestCreateShortURL_ServiceError(t *testing.T) {
 	requestBody := services.URLRequest{URL: "https://example.com"}
 	mockService.On("CreateShortURL", mock.Anything, requestBody).Return(nil, assert.AnError)
 
-	router.POST("/shorten", handler.CreateShortURL)
+	router.POST("/urls", handler.CreateShortURL)
 
 	// Create request
 	jsonBody, _ := json.Marshal(requestBody)
-	req := httptest.NewRequest("POST", "/shorten", bytes.NewBuffer(jsonBody))
+	req := httptest.NewRequest("POST", "/urls", bytes.NewBuffer(jsonBody))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 

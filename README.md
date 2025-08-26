@@ -1,6 +1,8 @@
-# Go URL Shortener
+# Go AI URL Shortener
 
-A simple, lightweight URL shortener featuring **AI-powered slug generation**. Built with Go, Gin framework, Redis for persistent storage, and OpenAI API.
+A simple, lightweight URL shortener featuring **AI-powered slug generation**. Built with Go, Gin framework, Redis for persistent storage, and OpenAI API. Includes a minimal React frontend.
+
+![Screenshot of the frontend](screenshot.png)
 
 ## Features
 
@@ -45,7 +47,7 @@ A simple, lightweight URL shortener featuring **AI-powered slug generation**. Bu
 
 ### Create Short URL
 ```
-POST /shorten
+POST /api/urls
 Content-Type: application/json
 
 {
@@ -89,7 +91,7 @@ Response:
 
 ### Create a Short URL
 ```bash
-curl -X POST http://localhost:8080/shorten \
+curl -X POST http://localhost:8080/urls \
   -H "Content-Type: application/json" \
   -d '{"url": "https://www.websites-about-good-coffee.com"}'
 ```
@@ -114,6 +116,39 @@ curl http://localhost:8080/health
 curl -L http://localhost:8080/goodbrew
 ```
 
+## Frontend
+
+A simple React frontend is included in the `frontend/` directory. It allows users to create short URLs via a user-friendly interface.
+
+### Setup & Run
+
+1. Install dependencies:
+  ```bash
+  cd frontend
+  npm install
+  ```
+2. Start the development server:
+  ```bash
+  npm run dev
+  ```
+  The app will be available at `http://localhost:5173` by default.
+
+### Frontend API Endpoint
+
+The frontend communicates with the backend using the following endpoint:
+
+- **POST `/api/urls`**
+
+  Example request body:
+  ```json
+  {
+   "url": "https://www.example.com"
+  }
+  ```
+
+  The backend responds with the shortened URL and slug details.
+
+
 ## Technical Details
 
 - **Storage**: Redis with automatic expiration (1 year TTL)
@@ -123,6 +158,7 @@ curl -L http://localhost:8080/goodbrew
 - **Graceful Shutdown**: Proper cleanup on server termination
 - **Error Handling**: Comprehensive error handling and logging
 - **Slug Validation**: Ensures slugs are 3-8 characters, alphanumeric with hyphens
+- **Frontend**: Interactive UI to shorten URLs
 
 ## Development
 
@@ -139,6 +175,5 @@ go test ./tests/... -v
 ## Areas of Improvement
 
 - Dockerize the entire project for easier deployment
-- Add a React frontend for user-friendly interface
 - Implement rate limiting for API endpoints
 - Enhance logging for better observability

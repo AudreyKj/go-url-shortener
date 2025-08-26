@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// POST /shorten 
+// POST /api/urls 
 func (h *URLHandler) CreateShortURL(c *gin.Context) {
 	var req services.URLRequest
 

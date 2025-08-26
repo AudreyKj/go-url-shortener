@@ -16,6 +16,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+"go-url-shortner/middleware"
 )
 
 func main() {
@@ -51,9 +52,11 @@ func main() {
 
 	// Setup Gin router
 	router := gin.Default()
+	// Allow frontend origin
+	router.Use(middleware.CORSMiddleware("http://localhost:5173"))
 
 	// Routes
-	router.POST("/shorten", urlHandler.CreateShortURL)
+	router.POST("/api/urls", urlHandler.CreateShortURL)
 	router.GET("/:shortCode", urlHandler.RedirectToURL)
 	router.GET("/health", urlHandler.HealthCheck)
 
