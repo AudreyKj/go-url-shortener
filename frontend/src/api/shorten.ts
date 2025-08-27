@@ -1,4 +1,5 @@
-export const API_URL = 'http://localhost:8080/api/urls';
+
+export const API_URL = `${import.meta.env.VITE_API_URL}/api/urls`;
 
 export async function shortenUrl(url: string): Promise<string> {
     try {

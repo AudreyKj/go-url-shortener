@@ -28,20 +28,58 @@ A simple, lightweight URL shortener featuring **AI-powered slug generation**. Bu
    OPENAI_API_KEY=<your-key>
    ```
 
-2. **Start Redis**  
-   Run Redis using Docker Compose:
+2. **Run Docker-Compose**  
    ```bash
-   docker-compose up -d redis
-   ```
-
-3. **Start the service**  
-   Run the Go server:
-   ```bash
-   go run .
-   ```
+   docker-compose up -d
 
 4. **Access the service**  
-   The server will start on `http://localhost:8080`.
+   Access `http://localhost:3000`.
+
+## Running Locally (Frontend, Backend, Redis)
+
+### 1. Start Redis
+You can run Redis locally using Docker:
+
+```bash
+docker run --name url-redis -p 6379:6379 -d redis:7
+```
+
+Or use the provided `docker-compose.yml`:
+
+```bash
+docker-compose up -d redis
+```
+
+### 2. Run the Backend (Go server)
+1. Install dependencies (if needed):
+  ```bash
+  cd server
+  go mod tidy
+  ```
+2. Start the server:
+  ```bash
+  go run main.go
+  ```
+  The backend will listen on the port specified in your `.env` or config (default: `8080`).
+
+### 3. Run the Frontend (React app)
+1. Install dependencies:
+  ```bash
+  cd frontend
+  npm install
+  ```
+2. Start the development server:
+  ```bash
+  npm run dev
+  ```
+  The frontend will be available at `http://localhost:3000`.
+
+### 4. Access the App
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend API: [http://localhost:8080](http://localhost:8080)
+- Redis: [localhost:6379](localhost:6379)
+
+**Note:** Ensure the backend is running before using the frontend. The backend must be able to connect to Redis.
 
 ## API Endpoints
 
@@ -91,7 +129,7 @@ Response:
 
 ### Create a Short URL
 ```bash
-curl -X POST http://localhost:8080/urls \
+curl -X POST http://localhost:8080/api/urls \
   -H "Content-Type: application/json" \
   -d '{"url": "https://www.websites-about-good-coffee.com"}'
 ```
@@ -171,9 +209,3 @@ go build -o url-shortener main.go
 ```bash
 go test ./tests/... -v
 ```
-
-## Areas of Improvement
-
-- Dockerize the entire project for easier deployment
-- Implement rate limiting for API endpoints
-- Enhance logging for better observability

@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 import App from './App';
 
 // Mock the shortenUrl API using Vitest

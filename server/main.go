@@ -53,7 +53,7 @@ func main() {
 	// Setup Gin router
 	router := gin.Default()
 	// Allow frontend origin
-	router.Use(middleware.CORSMiddleware("http://localhost:5173"))
+	router.Use(middleware.CORSMiddleware("http://localhost:3000"))
 
 	// Routes
 	router.POST("/api/urls", urlHandler.CreateShortURL)
@@ -61,10 +61,10 @@ func main() {
 	router.GET("/health", urlHandler.HealthCheck)
 
 	// Create HTTP server
-	server := &http.Server{
-		Addr:    cfg.ServerHost + ":" + cfg.ServerPort,
-		Handler: router,
-	}
+       server := &http.Server{
+	       Addr:    "0.0.0.0:" + cfg.ServerPort,
+	       Handler: router,
+       }
 
 	// Start server in a goroutine
 	go func() {
