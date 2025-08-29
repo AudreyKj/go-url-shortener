@@ -1,8 +1,55 @@
 # Go AI URL Shortener
 
-A simple, lightweight URL shortener featuring **AI-powered slug generation**. Built with Go, Gin framework, Redis for persistent storage, and OpenAI API. Includes a minimal React frontend.
+Most URL shorteners return random slugs — but what if your shortened link could have a catchy, meaningful slug that actually captures the theme of your URL?
+
+Built with Go, Gin framework, Redis for persistent storage, and OpenAI API. Includes a minimal React frontend.
 
 ![Screenshot of the frontend](screenshot.png)
+
+## System Design
+
+```
+                ┌───────────────────────┐
+                │       React UI        │
+                │  (User enters URL)    │
+                └───────────┬───────────┘
+                            │ REST API
+                            ▼
+                ┌───────────────────────┐
+                │    Go + Gin Backend   │
+                │                       │
+                │ Endpoints:            │
+                │ - POST /shorten       │
+                │ - GET /:slug          │
+                │ - GET /health         │
+                └──────┬─────────┬──────┘
+                       │         │
+      ┌────────────────┘         └────────────────┐
+      ▼                                         ▼
+┌───────────────┐                        ┌─────────────────┐
+│    OpenAI API │                        │     Redis DB    │
+│ (Slug Suggest)│                        │ short→long URLs │
+└───────────────┘                        │ TTL = 1 year    │
+                                         └─────────────────┘
+```
+
+```
+User Browser ── GET /catchy-slug ──► Gin Backend
+                                 │
+                                 ▼
+                          Lookup slug in Redis
+                                 │
+                   ┌─────────────┴─────────────┐
+                   │                           │
+          Slug found (long URL)        Slug not found
+                   │                           │
+                   ▼                           ▼
+   Return HTTP 302 Redirect          Return 404 / Error page
+   Location: long URL
+                   │
+                   ▼
+User Browser ── GET long URL ──► Destination website
+```
 
 ## Features
 
