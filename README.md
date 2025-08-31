@@ -40,7 +40,7 @@ Built with Go (Gin framework), Redis for persistent storage, OpenAI API, Docker,
                 └──────┬─────────┬──────┘
                        │         │
       ┌────────────────┘         └────────────────┐
-      ▼                                         ▼
+      ▼                                           ▼
 ┌───────────────┐                        ┌─────────────────┐
 │    OpenAI API │                        │     Redis DB    │
 │ (Slug Suggest)│                        │ short→long URLs │
@@ -68,8 +68,13 @@ User Browser ── GET long URL ──► Destination website
 
 ## Features
 
- - Docker virtualization for quickstart
-- Docker virtualization for quickstart
+- Create short URLs from long URLs
+- **AI-powered slug generation** for catchy and meaningful URLs
+- Automatic fallback when AI is unavailable
+- Redirect short URLs to original URLs
+- **Redis persistent storage** with automatic expiration (1 year TTL)
+- RESTful API endpoints
+- Health check endpoint
 
 ## Prerequisites
 
@@ -116,8 +121,7 @@ docker-compose up -d redis
 ### 3. Run the Frontend (React app)
 
 
-1. **Create an `.env` file in `/frontend`**  
-  Add the API URL:
+1. **Create an `.env` file in `/frontend`** 
   ```
   VITE_API_URL=http://localhost:8080
   ```
