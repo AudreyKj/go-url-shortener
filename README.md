@@ -121,18 +121,18 @@ docker-compose up -d redis
 ### 3. Run the Frontend (React app)
 
 
-1. **Create an `.env` file in `/frontend`** 
+1. Create an `.env` file in `/frontend`
   ```
   VITE_API_URL=http://localhost:8080
   ```
 
-2. **Install dependencies:**
+2. Install dependencies:
   ```bash
   cd frontend
   npm install
   ```
 
-3. **Start the development server:**
+3. Start the development server:
   ```bash
   npm run dev
   ```
@@ -261,6 +261,7 @@ The frontend communicates with the backend using the following endpoint:
 - **Error Handling**: Comprehensive error handling and logging
 - **Slug Validation**: Ensures slugs are 3-8 characters, alphanumeric with hyphens
 - **Frontend**: Interactive UI to shorten URLs
+- **Docker**: virtualization for quickstart
 
 ## Development
 
