@@ -1,10 +1,25 @@
-# Go AI URL Shortener
+# AI URL Shortener
 
-Most URL shorteners return random slugs — but what if your shortened link could have a catchy, meaningful slug that actually captures the theme of your URL?
+Most URL shorteners return random slugs — but what if your shortened link could have a catchy slug that actually captures the theme of your URL?
 
-Built with Go, Gin framework, Redis for persistent storage, and OpenAI API. Includes a minimal React frontend.
+This project is an AI-powered URL shortener that generates meaningful slugs for your links.  It provides a fast, user-friendly way to create and share short links. 
 
-![Screenshot of the frontend](screenshot.png)
+Built with Go (Gin framework), Redis for persistent storage, OpenAI API, Docker, and a minimal React frontend. 
+
+![Screenshot of the frontend](./docs/screenshot.png)
+
+## Table of Contents
+- [System Design](#system-design)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Quick Start with Docker](#quick-start-with-docker)
+- [Running Locally](#running-locally-frontend-backend-redis)
+- [API Endpoints](#api-endpoints)
+- [Example Usage](#example-usage)
+- [Frontend](#frontend)
+- [Technical Details](#technical-details)
+- [Development](#development)
+
 
 ## System Design
 
@@ -63,8 +78,6 @@ User Browser ── GET long URL ──► Destination website
 
 ## Prerequisites
 
-- Go 1.24 or higher
-- Redis server (can be run locally with Docker)
 - OpenAI API key (for AI-powered slug generation)
 
 ## Quick Start with Docker
@@ -74,6 +87,8 @@ User Browser ── GET long URL ──► Destination website
    ```bash
    OPENAI_API_KEY=<your-key>
    ```
+
+  Optionally, you can also define a `SERVER_PORT` env variable (default is 8080).
 
 2. **Run Docker-Compose**  
    ```bash
@@ -86,12 +101,6 @@ User Browser ── GET long URL ──► Destination website
 
 ### 1. Start Redis
 You can run Redis locally using Docker:
-
-```bash
-docker run --name url-redis -p 6379:6379 -d redis:7
-```
-
-Or use the provided `docker-compose.yml`:
 
 ```bash
 docker-compose up -d redis
@@ -107,7 +116,7 @@ docker-compose up -d redis
   ```bash
   go run main.go
   ```
-  The backend will listen on the port specified in your `.env` or config (default: `8080`).
+  The backend will listen on the port specified in your `.env` (default: `8080`).
 
 ### 3. Run the Frontend (React app)
 1. Install dependencies:
@@ -247,12 +256,26 @@ The frontend communicates with the backend using the following endpoint:
 
 ## Development
 
-### Building
+### Sever Build
 ```bash
+cd server
 go build -o url-shortener main.go
 ```
 
-### Running Tests
+### Server Tests
 ```bash
+cd server
 go test ./tests/... -v
+```
+
+### Frontend Build
+```bash
+cd frontend
+npm run build
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
 ```

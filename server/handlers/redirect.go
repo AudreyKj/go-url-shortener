@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,5 +15,6 @@ func (h *URLHandler) RedirectToURL(c *gin.Context) {
 		return
 	}
 
+	// 301 status code with original URL in Location header
 	c.Redirect(http.StatusMovedPermanently, originalURL)
 }

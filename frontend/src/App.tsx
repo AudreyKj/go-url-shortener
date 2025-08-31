@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { shortenUrl } from './api/shorten';
-import './App.css';
+import './styles/App.css';
 
 function App() {
   const [url, setUrl] = useState('');
@@ -41,32 +41,33 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h2>Minimal AI URL Shortener</h2>
-      <form onSubmit={handleSubmit} className="shorten-form">
+    <div className="url-shortener">
+      <h2 className="url-shortener__title">Minimal AI URL Shortener</h2>
+      <form onSubmit={handleSubmit} className="url-shortener__form">
         <input
           type="url"
+          className="url-shortener__input"
           placeholder="Paste your link here..."
           value={url}
           onChange={e => setUrl(e.target.value)}
           required
         />
-        <button type="submit" disabled={loading}>
+        <button type="submit" className="url-shortener__button" disabled={loading}>
           {loading ? 'Shortening...' : 'Shorten'}
         </button>
       </form>
       {shortUrl && (
-        <div className="result">
-            <span>Shortened URL:</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
-              <a href={shortUrl} target="_blank" rel="noopener noreferrer">{shortUrl}</a>
-              <button className="copy-btn" onClick={handleCopy} type="button">
-                {copied ? 'Copied!' : 'Copy'}
+        <div className="url-shortener__result">
+            <span className="url-shortener__result-label" data-testid="shortened-url-label">Shortened URL:</span>
+            <div className="url-shortener__result-link">
+              <a className="url-shortener__result-anchor" href={shortUrl} target="_blank" rel="noopener noreferrer">{shortUrl}</a>
+              <button className={`url-shortener__copy-btn${copied ? ' url-shortener__copy-btn--copied' : ''}`} onClick={handleCopy} type="button">
+                {copied ? 'Copied' : 'Copy'}
               </button>
             </div>
         </div>
       )}
-      {error && <div className="error">{error}</div>}
+      {error && <div className="url-shortener__error">{error}</div>}
     </div>
   );
 }

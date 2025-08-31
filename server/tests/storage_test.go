@@ -70,39 +70,6 @@ func TestRedisStorage_GetURL(t *testing.T) {
 	mockStorage.AssertExpectations(t)
 }
 
-func TestRedisStorage_DeleteURL(t *testing.T) {
-	// Test using the mock storage
-	mockStorage := NewMockRedisStorage()
-	ctx := context.Background()
-	shortCode := "abc123"
-	originalURL := "https://example.com"
-
-	// Set up mock expectations
-	mockStorage.On("StoreURL", ctx, shortCode, originalURL).Return(nil)
-	mockStorage.On("GetURL", ctx, shortCode).Return(originalURL, nil).Once()
-	mockStorage.On("DeleteURL", ctx, shortCode).Return(nil)
-	mockStorage.On("GetURL", ctx, shortCode).Return("", assert.AnError).Once()
-
-	// Store a URL first
-	err := mockStorage.StoreURL(ctx, shortCode, originalURL)
-	assert.NoError(t, err)
-
-	// Verify it exists
-	retrievedURL, err := mockStorage.GetURL(ctx, shortCode)
-	assert.NoError(t, err)
-	assert.Equal(t, originalURL, retrievedURL)
-
-	// Delete the URL
-	err = mockStorage.DeleteURL(ctx, shortCode)
-	assert.NoError(t, err)
-
-	// Verify it's gone
-	_, err = mockStorage.GetURL(ctx, shortCode)
-	assert.Error(t, err)
-
-	mockStorage.AssertExpectations(t)
-}
-
 func TestRedisStorage_Close(t *testing.T) {
 	// Test using the mock storage
 	mockStorage := NewMockRedisStorage()

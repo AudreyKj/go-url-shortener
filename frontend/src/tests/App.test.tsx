@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import App from './App';
+import App from '../App';
 
 // Mock the shortenUrl API using Vitest
-vi.mock('./api/shorten', () => ({
+vi.mock('../api/shorten', () => ({
   shortenUrl: async () => 'http://short.url/abc123',
 }));
 
@@ -21,7 +21,7 @@ describe('App', () => {
     fireEvent.change(input, { target: { value: 'https://example.com' } });
     fireEvent.click(button);
     await waitFor(() => {
-      expect(screen.getByText(/shortened url:/i)).toBeInTheDocument();
+      expect(screen.getByTestId('shortened-url-label')).toBeInTheDocument();
       expect(screen.getByText('http://short.url/abc123')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /copy/i })).toBeInTheDocument();
     });

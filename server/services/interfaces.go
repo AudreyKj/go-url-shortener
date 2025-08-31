@@ -16,6 +16,5 @@ type AISlugServiceInterface interface {
 type StorageInterface interface {
 	StoreURL(ctx context.Context, shortCode, originalURL string) error
 	GetURL(ctx context.Context, shortCode string) (string, error)
-	DeleteURL(ctx context.Context, shortCode string) error
 	Close() error
 }

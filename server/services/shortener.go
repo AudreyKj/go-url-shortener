@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"strings"
-
 	"go-url-shortner/utils"
 )
 
@@ -27,6 +25,11 @@ type URLService struct {
 	serverPort string
 }
 
+const (
+    aiGenerated = "ai_generated"
+    hashBased   = "hash_based"
+)	
+
 func NewURLService(storage StorageInterface, aiService AISlugServiceInterface, serverHost, serverPort string) *URLService {
 	return &URLService{
 		storage:    storage,
@@ -43,6 +46,7 @@ func (s *URLService) CreateShortURL(ctx context.Context, req URLRequest) (*URLRe
 
 	var shortCode string
 	var err error
+	var slugType string
 
 	if s.aiService != nil {
 		aiSlug, aiErr := s.aiService.GenerateSlug(ctx, req.URL)
@@ -50,6 +54,7 @@ func (s *URLService) CreateShortURL(ctx context.Context, req URLRequest) (*URLRe
 		if aiErr == nil && aiSlug != "" {
 			if s.isSlugAvailable(ctx, aiSlug) {
 				shortCode = aiSlug
+				slugType = aiGenerated
 				log.Printf("Using AI-generated slug: %s", shortCode)
 			} else {
 				log.Printf("AI-generated slug '%s' already exists, falling back to hash", aiSlug)
@@ -62,6 +67,7 @@ func (s *URLService) CreateShortURL(ctx context.Context, req URLRequest) (*URLRe
 	// Fallback to hash-based slug if AI failed or slug is unavailable
 	if shortCode == "" {
 		shortCode = utils.ShortHash(req.URL)
+		slugType = hashBased
 		log.Printf("Using hash-based slug: %s", shortCode)
 	}
 
@@ -76,7 +82,7 @@ func (s *URLService) CreateShortURL(ctx context.Context, req URLRequest) (*URLRe
 		OriginalURL: req.URL,
 		ShortCode:   shortCode,
 		ShortURL:    fmt.Sprintf("http://%s:%s/%s", s.serverHost, s.serverPort, shortCode),
-		SlugType:    s.getSlugType(shortCode),
+		SlugType:    slugType,
 	}, nil
 }
 
@@ -87,31 +93,4 @@ func (s *URLService) GetOriginalURL(ctx context.Context, shortCode string) (stri
 func (s *URLService) isSlugAvailable(ctx context.Context, slug string) bool {
 	_, err := s.storage.GetURL(ctx, slug)
 	return err != nil 
-}
-
-
-func (s *URLService) getSlugType(slug string) string {
-	if s.aiService != nil {
-		// Simple heuristic: AI slugs are typically shorter and more readable
-		if len(slug) <= 8 && s.isReadableSlug(slug) {
-			return "ai_generated"
-		}
-	}
-	return "hash_based"
-}
-
-func (s *URLService) isReadableSlug(slug string) bool {
-	consonantCount := 0
-	vowelCount := 0
-
-	for _, char := range slug {
-		if strings.ContainsRune("bcdfghjklmnpqrstvwxz", char) {
-			consonantCount++
-		} else if strings.ContainsRune("aeiou", char) {
-			vowelCount++
-		}
-	}
-
-	// AI slugs typically have a good balance of consonants and vowels
-	return consonantCount > 0 && vowelCount > 0 && consonantCount+vowelCount >= 3
 }

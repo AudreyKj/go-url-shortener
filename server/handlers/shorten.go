@@ -2,9 +2,7 @@ package handlers
 
 import (
 	"net/http"
-
 	"go-url-shortner/services"
-
 	"github.com/gin-gonic/gin"
 )
 

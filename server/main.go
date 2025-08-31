@@ -35,7 +35,7 @@ func main() {
 	}
 	defer storage.Close()
 
-	// Initialize AI service (optional)
+	// Initialize AI service
 	var aiService services.AISlugServiceInterface
 	if cfg.OpenAIAPIKey != "" {
 		aiService = services.NewAISlugService(cfg.OpenAIAPIKey)
@@ -53,7 +53,8 @@ func main() {
 	// Setup Gin router
 	router := gin.Default()
 	// Allow frontend origin
-	router.Use(middleware.CORSMiddleware("http://localhost:3000"))
+	frontendOrigin := "http://localhost:3000"
+	router.Use(middleware.CORSMiddleware(frontendOrigin))
 
 	// Routes
 	router.POST("/api/urls", urlHandler.CreateShortURL)

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"time"
-
 	"github.com/redis/go-redis/v9"
 )
 
@@ -50,14 +49,6 @@ func (r *RedisStorage) GetURL(ctx context.Context, shortCode string) (string, er
 		return "", fmt.Errorf("failed to get URL from Redis: %w", err)
 	}
 	return originalURL, nil
-}
-
-func (r *RedisStorage) DeleteURL(ctx context.Context, shortCode string) error {
-	err := r.client.Del(ctx, shortCode).Err()
-	if err != nil {
-		return fmt.Errorf("failed to delete URL from Redis: %w", err)
-	}
-	return nil
 }
 
 func (r *RedisStorage) Close() error {

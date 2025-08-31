@@ -53,20 +53,6 @@ func (m *MockRedisStorage) GetURL(ctx context.Context, shortCode string) (string
 	return "", args.Error(1)
 }
 
-// DeleteURL mocks removing a shortCode mapping
-func (m *MockRedisStorage) DeleteURL(ctx context.Context, shortCode string) error {
-	m.Lock()
-	defer m.Unlock()
-
-	args := m.Called(ctx, shortCode)
-
-	if args.Error(0) == nil {
-		delete(m.urls, shortCode)
-	}
-
-	return args.Error(0)
-}
-
 // Close mocks closing the Redis connection
 func (m *MockRedisStorage) Close() error {
 	args := m.Called()

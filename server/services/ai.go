@@ -6,7 +6,6 @@ import (
 	"log"
 	"regexp"
 	"strings"
-
 	"github.com/sashabaranov/go-openai"
 )
 
@@ -46,9 +45,8 @@ func (s *AISlugService) GenerateSlug(ctx context.Context, originalURL string) (s
 	- Avoid generic or overused slugs
 
 	Examples:
-	- For "github.com" -> "ghub" or "git"
-	- For "stackoverflow.com" -> "stack" or "so"
-	- For "reddit.com" -> "reddit" or "rdt"
+	- For "https://best-books-lover.com/good-books/book" -> "bestbook" or "gbooks"
+	- For "https://travel-tips-expert.com/top-destinations/2025" -> "travexp" or "topdest"
 
 	Output:
 	Only return the slug itself with no explanation or formatting.`, originalURL, domain)
@@ -63,7 +61,7 @@ func (s *AISlugService) GenerateSlug(ctx context.Context, originalURL string) (s
 					Content: prompt,
 				},
 			},
-			MaxTokens:   20,
+			MaxTokens:   3,
 			Temperature: 0.7,
 		},
 	)
