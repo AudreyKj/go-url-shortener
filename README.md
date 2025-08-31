@@ -34,7 +34,7 @@ Built with Go (Gin framework), Redis for persistent storage, OpenAI API, Docker,
                 │    Go + Gin Backend   │
                 │                       │
                 │ Endpoints:            │
-                │ - POST /shorten       │
+                │ - POST /api/urls       │
                 │ - GET /:slug          │
                 │ - GET /health         │
                 └──────┬─────────┬──────┘
@@ -59,7 +59,7 @@ User Browser ── GET /catchy-slug ──► Gin Backend
           Slug found (long URL)        Slug not found
                    │                           │
                    ▼                           ▼
-   Return HTTP 302 Redirect          Return 404 / Error page
+   Return HTTP 301 Redirect          Return 404 / Error page
    Location: long URL
                    │
                    ▼
@@ -68,13 +68,8 @@ User Browser ── GET long URL ──► Destination website
 
 ## Features
 
-- Create short URLs from long URLs
-- **AI-powered slug generation** for catchy and meaningful URLs
-- Automatic fallback when AI is unavailable
-- Redirect short URLs to original URLs
-- **Redis persistent storage** with automatic expiration (1 year TTL)
-- RESTful API endpoints
-- Health check endpoint
+ - Docker virtualization for quickstart
+- Docker virtualization for quickstart
 
 ## Prerequisites
 
@@ -82,7 +77,7 @@ User Browser ── GET long URL ──► Destination website
 
 ## Quick Start with Docker
 
-1. **Create an `.env` file**  
+1. **Create an `.env` file in /server**  
    Add your OpenAI API key: 
    ```bash
    OPENAI_API_KEY=<your-key>
@@ -119,16 +114,25 @@ docker-compose up -d redis
   The backend will listen on the port specified in your `.env` (default: `8080`).
 
 ### 3. Run the Frontend (React app)
-1. Install dependencies:
+
+
+1. **Create an `.env` file in `/frontend`**  
+  Add the API URL:
+  ```
+  VITE_API_URL=http://localhost:8080
+  ```
+
+2. **Install dependencies:**
   ```bash
   cd frontend
   npm install
   ```
-2. Start the development server:
+
+3. **Start the development server:**
   ```bash
   npm run dev
   ```
-  The frontend will be available at `http://localhost:3000`.
+  The app will be available at [http://localhost:3000](http://localhost:3000) by default.
 
 ### 4. Access the App
 - Frontend: [http://localhost:3000](http://localhost:3000)
