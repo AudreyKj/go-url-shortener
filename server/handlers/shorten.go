@@ -1,12 +1,13 @@
 package handlers
 
 import (
-	"net/http"
 	"go-url-shortner/services"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
-// POST /api/urls 
+// POST /api/urls
 func (h *URLHandler) CreateShortURL(c *gin.Context) {
 	var req services.URLRequest
 
@@ -14,6 +15,16 @@ func (h *URLHandler) CreateShortURL(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
 		return
 	}
+
+	// Validate and normalize the input URL
+	validator := services.NewURLValidator()
+	normalizedURL, err := validator.NormalizeURL(req.URL)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// Use normalized URL for further processing
+	req.URL = normalizedURL
 
 	response, err := h.urlService.CreateShortURL(c.Request.Context(), req)
 	if err != nil {

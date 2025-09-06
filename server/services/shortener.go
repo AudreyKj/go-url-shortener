@@ -3,8 +3,8 @@ package services
 import (
 	"context"
 	"fmt"
-	"log"
 	"go-url-shortner/utils"
+	"log"
 )
 
 type URLRequest struct {
@@ -26,9 +26,9 @@ type URLService struct {
 }
 
 const (
-    aiGenerated = "ai_generated"
-    hashBased   = "hash_based"
-)	
+	aiGenerated = "ai_generated"
+	hashBased   = "hash_based"
+)
 
 func NewURLService(storage StorageInterface, aiService AISlugServiceInterface, serverHost, serverPort string) *URLService {
 	return &URLService{
@@ -40,13 +40,13 @@ func NewURLService(storage StorageInterface, aiService AISlugServiceInterface, s
 }
 
 func (s *URLService) CreateShortURL(ctx context.Context, req URLRequest) (*URLResponse, error) {
-	if req.URL == "" {
-		return nil, fmt.Errorf("URL is required")
-	}
-
 	var shortCode string
 	var err error
 	var slugType string
+
+	if req.URL == "" {
+		return nil, fmt.Errorf("URL is required")
+	}
 
 	if s.aiService != nil {
 		aiSlug, aiErr := s.aiService.GenerateSlug(ctx, req.URL)
@@ -92,5 +92,5 @@ func (s *URLService) GetOriginalURL(ctx context.Context, shortCode string) (stri
 
 func (s *URLService) isSlugAvailable(ctx context.Context, slug string) bool {
 	_, err := s.storage.GetURL(ctx, slug)
-	return err != nil 
+	return err != nil
 }

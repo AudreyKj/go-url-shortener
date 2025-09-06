@@ -79,6 +79,7 @@ func TestURLService_CreateShortURL_EmptyURL(t *testing.T) {
 	service := services.NewURLService(mockStorage, mockAI, "localhost", "8080")
 
 	req := services.URLRequest{URL: ""}
+	assert.Equal(t, "", req.URL)
 
 	// Execute
 	response, err := service.CreateShortURL(context.Background(), req)
