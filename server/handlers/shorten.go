@@ -20,7 +20,7 @@ func (h *URLHandler) CreateShortURL(c *gin.Context) {
 	validator := services.NewURLValidator()
 	normalizedURL, err := validator.NormalizeURL(req.URL)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid URL"})
 		return
 	}
 	// Use normalized URL for further processing

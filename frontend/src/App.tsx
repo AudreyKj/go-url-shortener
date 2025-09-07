@@ -20,9 +20,8 @@ function App() {
     try {
       const result = await shortenUrl(url);
       setShortUrl(result);
-    } catch (err: any) {
-      console.log('err', err)
-      setError(err.message || 'Error occurred');
+    } catch (err: unknown) {
+      if(err instanceof Error) setError(err.message);
     } finally {
       setLoading(false);
     }

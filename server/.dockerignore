@@ -1,0 +1,28 @@
+# Ignore Go build and cache files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Ignore test files and directories
+*.log
+*.tmp
+*.swp
+*.bak
+*.md
+/tests/
+
+# Ignore editor/project files
+.idea/
+.vscode/
+*.DS_Store
+
+# Ignore documentation
+/docs/
+
+# Ignore local configs
+.env
+.env.*
